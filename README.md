@@ -1,5 +1,5 @@
-[![Docker stars](https://img.shields.io/docker/image-size/sebastienheyd/self-signed-proxy-companion.svg?sort=semver)](https://hub.docker.com/repository/docker/sebastienheyd/self-signed-proxy-companion)
-[![Docker pulls](https://img.shields.io/docker/pulls/sebastienheyd/self-signed-proxy-companion.svg)](https://hub.docker.com/repository/docker/sebastienheyd/self-signed-proxy-companion)
+[![Docker stars](https://img.shields.io/docker/image-size/szitasg/self-signed-proxy-companion.svg?sort=semver)](https://hub.docker.com/repository/docker/szitasg/self-signed-proxy-companion)
+[![Docker pulls](https://img.shields.io/docker/pulls/szitasg/self-signed-proxy-companion.svg)](https://hub.docker.com/repository/docker/szitasg/self-signed-proxy-companion)
 
 # Self-signed certificate companion for Nginx-Proxy
 
@@ -39,7 +39,7 @@ $ docker run -d \
     --name proxy-companion \
     -v /var/run/docker.sock:/var/run/docker.sock:ro \
     -v /path/to/certs:/etc/nginx/certs:rw \
-    sebastienheyd/self-signed-proxy-companion
+    szitasg/self-signed-proxy-companion
 ```
 
 * Then start any proxied containers with an additional env var `SELF_SIGNED_HOST`
@@ -78,7 +78,7 @@ services:
     proxy-companion:        
         container_name: proxy-companion
         restart: always
-        image: sebastienheyd/self-signed-proxy-companion
+        image: szitasg/self-signed-proxy-companion
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - ./certs:/etc/nginx/certs:rw
@@ -114,7 +114,7 @@ networks:
 
 | Variable | Default value | Description |
 | --- | --- | --- |
-| NGINX_PROXY_CONTAINER | proxy | nginxproxy/nginx-proxy container name |
+| NGINX_PROXY_CONTAINER | nginx | nginxproxy/nginx-proxy container name |
 | EXPIRATION | 3650 | Certificates validity period (in days) |
 | DOCKER_HOST | unix:///var/run/docker.sock | Path to the docker sock in current container |
 
@@ -125,7 +125,7 @@ By default this container is built for the `amd64` architecture
 But you can build it for another architecture (amd64, arm64, armhf, armel, i386) by specifying the `ARCH` argument
 
 ```
-docker build --no-cache --build-arg ARCH=arm64 -t sebastienheyd/self-signed-proxy-companion .
+docker build --no-cache --build-arg ARCH=arm64 -t szitasg/self-signed-proxy-companion .
 ```
 
 or by using `make`

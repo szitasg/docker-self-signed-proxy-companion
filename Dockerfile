@@ -1,25 +1,24 @@
-FROM alpine:latest
+FROM alpine:3.15.0
 
 RUN apk add --no-cache \
-        bash \
-        curl \
-        wget \
-        jq \
-        openssl
+    bash \
+    curl \
+    jq \
+    openssl
 
+ARG OS=alpine-linux
 ARG ARCH=amd64
+ARG DOCKER_GEN_VERSION=0.8.1
 
-RUN DOCKER_GEN_VERSION=$(curl -sL https://api.github.com/repos/jwilder/docker-gen/releases/latest | grep 'tag_name' | cut -d\" -f4) \
-    && echo $ARCH \
-    && wget https://github.com/jwilder/docker-gen/releases/download/$DOCKER_GEN_VERSION/docker-gen-linux-$ARCH-$DOCKER_GEN_VERSION.tar.gz \
-    && tar xvzf docker-gen-linux-$ARCH-$DOCKER_GEN_VERSION.tar.gz -C /usr/local/bin \
-    && rm docker-gen-linux-$ARCH-$DOCKER_GEN_VERSION.tar.gz
+RUN curl -L https://github.com/jwilder/docker-gen/releases/download/${DOCKER_GEN_VERSION}/docker-gen-${OS}-${ARCH}-${DOCKER_GEN_VERSION}.tar.gz -o docker-gen.tar.gz \
+    && tar xvzf docker-gen.tar.gz -C /usr/local/bin \
+    && rm docker-gen.tar.gz
 
 WORKDIR /app
 ADD . /app
 
 ENV DOCKER_HOST unix:///var/run/docker.sock
-ENV NGINX_PROXY_CONTAINER proxy
+ENV NGINX_PROXY_CONTAINER nginx
 ENV EXPIRATION 3650
 
 ENTRYPOINT [ "/bin/bash", "/app/entrypoint.sh" ]
